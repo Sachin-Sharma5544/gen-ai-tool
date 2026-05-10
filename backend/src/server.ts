@@ -1,5 +1,5 @@
 import { json, urlencoded } from "body-parser";
-import express, { type Express } from "express";
+import express, { type Express, Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
 
@@ -11,10 +11,10 @@ export const createServer = (): Express => {
     .use(urlencoded({ extended: true }))
     .use(json())
     .use(cors())
-    .get("/message/:name", (req, res) => {
+    .get("/message/:name", (req: Request, res:Response) => {
       return res.json({ message: `hello ${req.params.name}` });
     })
-    .get("/status", (_, res) => {
+    .get("/status", (req: Request, res: Response) => {
       return res.json({ ok: true });
     });
 
