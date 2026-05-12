@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+if git diff --cached --name-only | grep -E '(^|/)\.env'; then
+  echo "❌ Commit blocked: .env files cannot be committed"
+  exit 1
+fi
