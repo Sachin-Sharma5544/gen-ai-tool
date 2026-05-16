@@ -4,7 +4,7 @@
   "backend"
 ],
   "scripts": {
-    "prepare": "husky",
+    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky; fi",
     "frontend": "cd frontend && npm run dev --workspace frontend",
     "backend": "cd backend && npm run dev --workspace backend",
     "dev": "concurrently \"npm run frontend\" \"npm run backend\""
