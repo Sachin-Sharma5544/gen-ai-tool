@@ -2,12 +2,19 @@ import { json, urlencoded } from "body-parser";
 import express, { type Express, Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
-import OpenAI from "openai";
+import dotenv from "dotenv";
+import {GoogleGenerativeAI} from '@google/generative-ai'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+dotenv.config()
+
+
+const genAI = new GoogleGenerativeAI(
+  process.env.GEMINI_API_KEY as string
+);
+
+const model = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash",
 });
-
 
 export const createServer = (): Express => {
   const app = express();
@@ -27,19 +34,13 @@ export const createServer = (): Express => {
       try {
         const { message } = req.body;
 
-        const response = await openai.chat.completions.create({
-          model: "gpt-4.1-mini",
-          messages: [
-            {
-              role: "user",
-              content: message,
-            },
-          ],
-        });
+         const result = await model.generateContent(message);
+
+        const response = result.response.text();
 
         return res.json({
           success: true,
-          data: response.choices[0].message.content,
+          data: response
         });
       } catch (error) {
         console.error(error);

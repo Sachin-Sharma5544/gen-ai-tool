@@ -3,6 +3,7 @@
 import { useState } from "react";
 import MessageBubble from "./MessageBubble";
 import ChatInput from "./ChatInput";
+import axios from "axios"
 
 type Message = {
   text: string;
@@ -19,23 +20,40 @@ const ChatWindow = () => {
     },
   ]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = async () => {
+  if (!input.trim()) return;
+
+  const userMessage = input;
+
+  setMessages((prev) => [
+    ...prev,
+    {
+      text: userMessage,
+      isUser: true,
+    },
+  ]);
+
+  setInput("");
+
+  try {
+    const response = await axios.post(
+      "http://localhost:3001/chat",
+      {
+        message: userMessage,
+      }
+    );
 
     setMessages((prev) => [
       ...prev,
       {
-        text: input,
-        isUser: true,
-      },
-      {
-        text: "AI response placeholder",
+        text: response.data.data,
         isUser: false,
       },
     ]);
-
-    setInput("");
-  };
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <div className="flex h-screen flex-col bg-white">
