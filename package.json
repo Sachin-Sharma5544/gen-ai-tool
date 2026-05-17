@@ -1,12 +1,9 @@
 {
-"workspaces": [
-  "frontend",
-  "backend"
-],
+
   "scripts": {
-    "prepare": "husky || true",
-    "frontend": "cd frontend && npm run dev --workspace frontend",
-    "backend": "cd backend && npm run dev --workspace backend",
+    "prepare": "husky",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && npm run dev",
     "dev": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "devDependencies": {
