@@ -4,6 +4,7 @@ import { useState } from "react";
 import MessageBubble from "./MessageBubble";
 import ChatInput from "./ChatInput";
 import axios from "axios"
+import { getApiBaseUrl } from "../utils/api/apiUrl";
 
 type Message = {
   text: string;
@@ -37,7 +38,7 @@ const ChatWindow = () => {
 
   try {
     const response = await axios.post(
-      "http://localhost:3001/chat",
+      `${getApiBaseUrl()}/chat`,
       {
         message: userMessage,
       }
